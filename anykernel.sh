@@ -37,6 +37,19 @@ patch_vbmeta_flag=auto;
 # import functions/variables and setup patching - see for reference (DO NOT REMOVE)
 . tools/ak3-core.sh;
 
+# ROM Check
+test $(getprop ro.aospa.version)
+case $? in
+    0)
+        ui_print " " "AOSPA detected! Using AOSPA-specific DTBO..."
+        cp $home/dtbs/dtbo_aospa.img $home/dtbo.img
+        ;;
+    1)
+        ui_print " " "Other ROMs detected! Using regular DTBO..."
+        cp $home/dtbs/dtbo.img $home/dtbo.img
+        ;;
+esac
+
 # boot install
 dump_boot; # use split_boot to skip ramdisk unpack, e.g. for devices with init_boot ramdisk
 
